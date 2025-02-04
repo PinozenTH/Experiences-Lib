@@ -1,0 +1,36 @@
+<settings>
+    <pluginManagement>
+        <plugins>
+            <!-- Maven Source Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+
+    <repositories>
+        <!-- Public Repository -->
+        <repository>
+            <id>public</id>
+            <name>Public Packages</name>
+            <url>https://pinozenth.github.io/package/</url>
+        </repository>
+
+        <!-- Snapshot Repository -->
+        <repository>
+            <id>snapshot</id>
+            <name>Snapshots</name>
+            <url>https://pinozenth.github.io/snapshot/</url>
+        </repository>
+    </repositories>
+</settings>
