@@ -3,6 +3,7 @@ package com.pinont.experiences.api.menu;
 import com.pinont.experiences.plugin.ExpPlugin;
 import com.pinont.experiences.api.utils.Common;
 import com.pinont.experiences.api.utils.enums.MenuSize;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -17,7 +18,10 @@ public class Menu {
 	private final List<Button> buttons = new ArrayList<>();
 	private final List<Props> props = new ArrayList<>();
 
+	@Setter
 	private int size = 9 * 3;
+
+	@Setter
 	private String title = "Custom Menu";
 
 	private final Menu parent;
@@ -42,16 +46,6 @@ public class Menu {
 	}
 	protected final void addProp(Props prop) {
 		this.props.add(prop);
-	}
-
-	protected final void setSize(int size) {
-		this.size = size;
-	}
-
-	protected final void setSize(MenuSize size) { this.size = size.getSize(); }
-
-	protected final void setTitle(String title) {
-		this.title = title;
 	}
 
 	public final void displayTo(Player player) {

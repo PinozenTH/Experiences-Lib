@@ -1,84 +1,35 @@
 package com.pinont.experiences.api.commands;
 
-import com.pinont.experiences.api.utils.Common;
-import com.pinont.experiences.api.utils.enums.MessageType;
-import com.pinont.experiences.api.utils.texts.Message;
-import lombok.Getter;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Objects;
 
-@Getter
-public class SimpleCommand implements CommandExecutor, TabCompleter {
+public abstract class SimpleCommand extends Command implements CommandExecutor {
 
-    private final List<SimpleCommandManager> simpleCommandManager = new ArrayList<>();
-    private final Map<SimpleCommandManager, CommandSenderType> simpleCommandManagerCommandSenderTypeHashMap = new HashMap<>();
 
-    public enum CommandSenderType {
-        CONSOLE,
-        PLAYER,
-        BOTH
+    public SimpleCommand(@NotNull String name) {
+        super(name);
     }
 
-    public void addCommand(SimpleCommandManager simpleCommandManager, CommandSenderType commandSenderType) {
-        this.simpleCommandManager.add(simpleCommandManager);
-        this.simpleCommandManagerCommandSenderTypeHashMap.put(simpleCommandManager, commandSenderType);
+    public void register() {
+        if (Bukkit.getPluginCommand(getName()) != null) {
+            Objects.requireNonNull(Bukkit.getPluginCommand(getName())).setExecutor(this);
+        } else {
+            Bukkit.getConsoleSender().sendMessage("§cCommand " + getName() + " not found!");
+        }
     }
 
     @Override
     public final boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (Common.javaPlugin.getCommand(command.getName()) == null) return false;
-        for (SimpleCommandManager simpleCommandManager : this.simpleCommandManager) {
-            if (simpleCommandManager.getName().equalsIgnoreCase(command.getName()) && commandSender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
-                switch (simpleCommandManagerCommandSenderTypeHashMap.get(simpleCommandManager)) {
-                    case CONSOLE:
-                        if (!(commandSender instanceof Player)) {
-                            simpleCommandManager.execute(commandSender, command, strings);
-                        } else {
-                            commandSender.sendMessage("This command can only be executed by console.");
-                        }
-                        break;
-                    case PLAYER:
-                        if (commandSender instanceof Player) {
-                            simpleCommandManager.execute(commandSender, command, strings);
-                        } else {
-                            commandSender.sendMessage("This command can only be executed by players.");
-                        }
-                        break;
-                    case BOTH:
-                        simpleCommandManager.execute(commandSender, command, strings);
-                        break;
-                }
-                return true;
-            }
+        if (command.getName().equals(getName())) {
+            return execute(commandSender, s, strings);
         }
-        return true;
+        return false;
     }
 
-    @Nullable
-    @Override
-    public final List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (Common.javaPlugin.getCommand(command.getName()) == null) return null;
-        for (SimpleCommandManager simpleCommandManager : this.simpleCommandManager) {
-            if (simpleCommandManager.getName().equalsIgnoreCase(command.getName()) && commandSender.hasPermission(Objects.requireNonNull(command.getPermission()))) {
-                return simpleCommandManager.tabComplete(commandSender, command, strings);
-            }
-        }
-        return null;
-    }
-
-    public void register() {
-        for (SimpleCommandManager simpleCommandManager : this.simpleCommandManager) {
-            Objects.requireNonNull(Common.javaPlugin.getCommand(simpleCommandManager.getName())).setExecutor(this);
-            Objects.requireNonNull(Common.javaPlugin.getCommand(simpleCommandManager.getName())).setTabCompleter(this);
-             new Message().sendConsole(ChatColor.AQUA + "Registered SimpleCommand: " + simpleCommandManager.getName());
-        }
-    }
 }
+

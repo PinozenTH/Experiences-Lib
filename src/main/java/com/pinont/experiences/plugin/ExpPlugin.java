@@ -59,7 +59,6 @@ public abstract class ExpPlugin extends JavaPlugin {
 
         try {
             AutoRegisterScanner.scanAndRegister();
-
         } catch (final Throwable t) {
             Common.sneaky(t);
         }

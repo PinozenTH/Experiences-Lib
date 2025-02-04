@@ -27,6 +27,10 @@ public class Common {
         return Arrays.asList(getAllItemsMaterials()).contains(material);
     }
 
+    public static Boolean isAir(ItemStack item) {
+        return item.getType().isAir();
+    }
+
     public static Plugin plugin = ExpPlugin.getPlugin();
     public static JavaPlugin javaPlugin = ExpPlugin.plugin;
 

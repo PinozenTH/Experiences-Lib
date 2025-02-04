@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Interaction;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -165,6 +166,11 @@ public class ItemBuilder {
 
     public ItemBuilder setDurability(int durability) {
         this.durability = durability < 0 ? 0 : (short) durability;
+        return this;
+    }
+
+    public ItemBuilder addInteractions(Interaction interactions) {
+
         return this;
     }
 

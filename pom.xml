@@ -6,7 +6,7 @@
 
     <groupId>com.pinont</groupId>
     <artifactId>experiences</artifactId>
-    <version>2.03-snapshot</version>
+    <version>3-snapshot</version>
     <packaging>jar</packaging>
 
     <name>Experiences</name>
