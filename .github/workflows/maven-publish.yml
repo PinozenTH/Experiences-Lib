@@ -26,15 +26,7 @@ jobs:
         run: mvn clean install
 
       - name: Publish to GitHub Packages Apache Maven
-        run: |
-          mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-          if [[ "$GITHUB_REF" == "main" ]]; then
-            echo "Deploying to public repository"
-            mvn deploy -Drepository.id=public
-          else
-            echo "Deploying to snapshot repository"
-            mvn deploy -Drepository.id=snapshot
-          fi
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
 
     env:
       GITHUB_TOKEN: ${{ github.token }}
